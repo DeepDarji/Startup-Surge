@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: 3e296e3ace8ffb4419c21d0a2187c3d5
+guid: 5628c6c0c6f0c8e49897fc73aef4d516
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
   fontSize: 16
-  forceTextureCase: -2
+  forceTextureCase: -1
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Snacker Comic Personal Use Only
+  - Inlanders
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
