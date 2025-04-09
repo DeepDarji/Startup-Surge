@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2d4d060fcfca8ec4b9c58bee6056d516
+guid: 03a69f30a7db0164c8b5b33b0ad71c93
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2218148273968264437
-    second: upgrade_button_0
+      213: -4668873149583183575
+    second: ChatGPT Image Apr 9, 2025, 12_33_04 PM_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: upgrade_button_0
+      name: ChatGPT Image Apr 9, 2025, 12_33_04 PM_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 224
-        height: 74
+        width: 1024
+        height: 1536
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5f436095a1278ce10800000000000000
-      internalID: 2218148273968264437
+      spriteID: 9213cb17b94d43fb0800000000000000
+      internalID: -4668873149583183575
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      upgrade_button_0: 2218148273968264437
+      ChatGPT Image Apr 9, 2025, 12_33_04 PM_0: -4668873149583183575
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
