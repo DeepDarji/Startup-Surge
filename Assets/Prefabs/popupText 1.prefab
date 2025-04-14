@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5972871834764854640}
   - component: {fileID: 4917693239476052033}
   - component: {fileID: 8132112305902774688}
-  - component: {fileID: 5753155800358747243}
   m_Layer: 5
   m_Name: popupText 1
   m_TagString: Untagged
@@ -235,18 +234,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5753155800358747243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4828914867323068836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7893e3004143cb4d8bb9c440ad732aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popupText: {fileID: 4917693239476052033}
-  popupAnimator: {fileID: 0}
-  popupAudio: {fileID: 0}

@@ -39,7 +39,14 @@
         private Vector3 cameraMinPos = new Vector3(-6f, 0f, -10f);
         private Vector3 cameraMaxPos = new Vector3(6f, 0f, -10f);
 
-        private List<Vector3> occupiedPositions = new List<Vector3>();
+        // Audio
+        public AudioSource audioSource;
+        public AudioClip earnSound;
+        public AudioClip upgradeSound;
+        public AudioClip hireSound;
+        public AudioClip errorSound;
+
+    private List<Vector3> occupiedPositions = new List<Vector3>();
 
         void Start()
         {
@@ -55,6 +62,7 @@
         void OnEarnClicked()
         {
             currentCash += incomePerClick;
+            PlaySound(earnSound);
             UpdateUI();
         }
 
@@ -67,11 +75,13 @@
                 upgradeLevel++;
                 upgradeCost = Mathf.RoundToInt(upgradeCost * 1.7f);
                 ShowPopup("Upgrade successful!");
+                PlaySound(upgradeSound);
                 UpdateUI();
             }
             else
             {
                 ShowPopup($"Low Money! Need ${upgradeCost}");
+                PlaySound(errorSound);
             }
         }
 
@@ -93,15 +103,18 @@
 
                     ShowPopup($"Employee Hired! Total: {employeeCount}");
                     MoveCameraTo(spawnPos.x);
+                    PlaySound(hireSound);
                     UpdateUI();
                 }
                 else
                 {
                     ShowPopup("No space left to hire!");
-                }
+                    PlaySound(errorSound);
+            }
             }
             else
             {
+                PlaySound(errorSound);
                 ShowPopup($"Low Money! Need ${employeeCost}");
             }
         }
@@ -241,4 +254,10 @@
             }
         }
 
-    }
+        void PlaySound(AudioClip clip)
+        {
+            if (audioSource != null && clip != null)
+                audioSource.PlayOneShot(clip);
+        }
+
+}
