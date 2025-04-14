@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 47729928155082569}
   - component: {fileID: 6328002493963017674}
   - component: {fileID: 6978700837189450813}
+  - component: {fileID: 7551939050195806432}
   m_Layer: 0
   m_Name: char5
-  m_TagString: Untagged
+  m_TagString: Employee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,3 +103,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinPopupPrefab: {fileID: 8143290903870034561, guid: cb47e67d163cef841b94aaa3a2dc7d86, type: 3}
   interval: 1
+--- !u!65 &7551939050195806432
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7524243932365269197}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.45, y: 2.01, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}

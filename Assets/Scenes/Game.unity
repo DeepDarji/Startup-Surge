@@ -746,10 +746,10 @@ MonoBehaviour:
   employeeParent: {fileID: 166812305}
   mainCamera: {fileID: 1731087984}
   audioSource: {fileID: 1414909883}
-  earnSound: {fileID: 0}
-  upgradeSound: {fileID: 0}
-  hireSound: {fileID: 0}
-  errorSound: {fileID: 0}
+  earnSound: {fileID: 8300000, guid: 950b10036f60b5a4b840276ecc597759, type: 3}
+  upgradeSound: {fileID: 8300000, guid: d44af233c85160c43ac8c6529d2a0536, type: 3}
+  hireSound: {fileID: 8300000, guid: 4965067322c7a0a438f2817aa4911661, type: 3}
+  errorSound: {fileID: 8300000, guid: c272562fd7ed6fd48898c92e70dd1a19, type: 3}
 --- !u!4 &1414909882
 Transform:
   m_ObjectHideFlags: 0
