@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
 
     private List<Vector3> occupiedPositions = new List<Vector3>();
 
+    public GameEnd gameEndManager;
+
     // Function to generate Zone A positions dynamically
     List<Vector3> GenerateZoneAPositions()
     {
@@ -194,6 +196,11 @@ public class GameManager : MonoBehaviour
             PlaySound(errorSound);
             ShowPopup($"Low Money! Need ${employeeCost}");
         }
+        if (employeeCount >= 15)  // Replace with your condition
+        {
+            gameEndManager.EndGame();  // Call the EndGame function in the new script
+        }
+
     }
 
     void AddPassiveIncome()

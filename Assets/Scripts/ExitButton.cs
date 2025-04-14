@@ -12,7 +12,6 @@ public class ExitButton : MonoBehaviour
         if (currentScene == mainMenuSceneName)
         {
             // Exit the game
-            Debug.Log("Exiting Game...");
             Application.Quit();
 
 #if UNITY_EDITOR
