@@ -1,49 +1,91 @@
-# Startup Surge (Unity 2D)
-An addictive 2D idle/tycoon-style game where players hire employees, upgrade systems, and earn passive income — all with a smooth UI, engaging mechanics, and rewarding progression.
+# 🚀 Startup Surge (Unity 2D)
 
-## 🎮 Features
-- 💰 Click-to-Earn Mechanic with Upgrade System
-- 🧍‍♂️ Employee Hiring with Two Spawn Zones (A & B)
-- 💼 15 Unique Employee Positions with Smart Spawning
-- 📈 Passive Income System based on Employee Count
-- 🎥 Dynamic Camera Movement to Spawned Employees
-- 📜 Main Menu and Credits Scene
-- 🧠 End Game Condition (after 15 employees hired)
-- 🔊 Background Music (persists across scenes)
-- 💬 Pop-Up Text Animations for Feedback
-- 🎨 Simple & Clean UI using TextMeshPro
+**Startup Surge** is an addictive 2D idle/tycoon-style game where you hire employees, upgrade systems, and rack up passive income — all wrapped in a clean UI, fluid animations, and satisfying game loops. Built solo in Unity using C#.
 
-## 🛠️ Technologies Used
-- Unity Engine (2D)
-- C#
-- TextMeshPro
-- AudioSource System
-- Unity UI System
+---
 
-## 🎬 Scenes Included
-- **Main Menu:** Game title, Start, Continue, Credits, Exit
-- **Game Scene:** Core gameplay with UI and hiring system
-- **Credits Scene:** Developer credits + Exit button
-- **End Game Panel:** Displays message and button when game is completed
+## 📲 Download & Play
 
-## 📁 Key Scripts
-- `GameManager.cs`: Core game logic (spawning, cash, upgrades)
-- `GameEnd.cs`: Handles end-of-game logic
-- `StartGameButton.cs`, `CreditButton.cs`, `ExitButton.cs`: Menu Navigation
-- `CoinPopup.cs`, `PopupText.cs`: Visual feedback systems
-- `BackgroundMusic.cs`: Persistent music across scenes
-- `AutoScroll.cs`: Optional UI enhancements
-- `EmployeeCoinSpawner.cs`: Handles coin spawns from employees
+🔗 [Download APK](https://drive.google.com/file/d/1qjkxA-I66kdsM2i_AZ-3Sp3yjDCsARMV/view?usp=drive_link) — Install it directly on your Android device and try it out!
 
-## 🧠 Game Logic Highlights
-- **Smart Employee Spawning:** 15 positions across two zones with prefab assignment based on spawn area.
-- **Prefab Diversity:** Each spawn position uses a specific prefab, adding variety.
-- **Progressive Costing:** Hiring and upgrades become more expensive over time, encouraging planning.
-- **Camera Follow:** Smooth camera pans to new hires and then resets.
+---
+
+## 🎮 Game Features
+
+- 💰 **Click-to-Earn** mechanic with upgrade scaling
+- 🧍‍♂️ **Smart Hiring** across two dynamic zones (A & B)
+- 💼 **15 Unique Employee Positions** with zone-based prefabs
+- 📈 **Passive Income** tied to employee count and upgrades
+- 🎥 **Smooth Camera Focus** on new hires with auto-reset
+- 🔄 **Scene Transitions** (Main Menu → Game → Credits → End)
+- 🧠 **End Game Logic** triggers after all 15 hires are filled
+- 🔊 **Persistent Background Music** across scenes
+- 💬 **Popup Feedback UI** using animations
+- 🎨 **Minimalist UI** built with TextMeshPro
+
+---
+
+## 🛠️ Built With
+
+- 🎮 Unity Engine (2D)
+- 💻 C#
+- 🧩 TextMeshPro
+- 🔉 Unity Audio System
+- 🖱 Unity UI Toolkit
+
+---
+
+## 🧠 Core Game Logic
+
+| Feature                  | Description                                                                 |
+|--------------------------|-----------------------------------------------------------------------------|
+| Smart Employee Spawning  | Prefabs auto-assign to 15 positions across Zones A & B                      |
+| Progressive Upgrades     | Hiring/upgrades get costlier with each action                               |
+| Dynamic Camera Control   | Smooth camera pans to new employees, then resets to default                 |
+| Prefab Variety           | Unique visuals per spawn point to create replay value                       |
+
+---
 
 ## 📸 Preview
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/C2qGslOkIuM/0.jpg)](https://www.youtube.com/watch?v=C2qGslOkIuM)
 
+## 🎬 Scenes Overview
+
+- 🎬 **Main Menu** – Title screen with Start, Continue, Credits, Exit  
+- 🎮 **Game Scene** – Core gameplay: cash, employees, upgrades  
+- 📝 **Credits** – Developer credits and exit  
+- 🏁 **End Game Panel** – Triggered when all employees are hired
+
 ---
 
-🧑‍💻 Developed by: Deep Darji
+## 🧩 Key Scripts
+
+- `GameManager.cs` – Controls game state, money, hiring
+- `GameEnd.cs` – Triggers end state logic
+- `StartGameButton.cs`, `CreditButton.cs`, `ExitButton.cs` – Handles menu navigation
+- `CoinPopup.cs`, `PopupText.cs` – Feedback for earning/spending
+- `BackgroundMusic.cs` – Keeps audio consistent across scenes
+- `EmployeeCoinSpawner.cs` – Spawns coins from employees
+- `AutoScroll.cs` – UI scroll behavior for credits
+
+---
+
+## 📸 Screenshots
+
+[Main Menu](https://github.com/DeepDarji/Startup-Surge/More/1.png) 
+
+[Credit](https://github.com/DeepDarji/Startup-Surge/More/2.png) 
+
+[Game](https://github.com/DeepDarji/Startup-Surge/More/3.jpg) |
+
+---
+
+## 👨‍💻 Developed By
+
+**Deep Darji**  
+🖥 [Portfolio](https://deepdarji.github.io) | 🐙 [GitHub](https://github.com/DeepDarji)  
+
+---
+
+⭐ If you liked it or have suggestions to improve — feel free to open an issue or drop a ⭐ on the repo!
+
