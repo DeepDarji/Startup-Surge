@@ -76,7 +76,7 @@
 
 ![Credit](More/2.png) 
 
-![Game](More/3.jpg) |
+![Game](More/3.png) |
 
 ---
 
