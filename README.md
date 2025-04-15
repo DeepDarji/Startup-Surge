@@ -72,11 +72,11 @@
 
 ## 📸 Screenshots
 
-[Main Menu](More/1.png) 
+![Main Menu](More/1.png) 
 
-[Credit](More/2.png) 
+![Credit](More/2.png) 
 
-[Game](More/3.jpg) |
+![Game](More/3.jpg) |
 
 ---
 
