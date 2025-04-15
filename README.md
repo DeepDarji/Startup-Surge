@@ -72,11 +72,11 @@
 
 ## 📸 Screenshots
 
-[Main Menu](https://github.com/DeepDarji/Startup-Surge/More/1.png) 
+[Main Menu](More/1.png) 
 
-[Credit](https://github.com/DeepDarji/Startup-Surge/More/2.png) 
+[Credit](More/2.png) 
 
-[Game](https://github.com/DeepDarji/Startup-Surge/More/3.jpg) |
+[Game](More/3.jpg) |
 
 ---
 
