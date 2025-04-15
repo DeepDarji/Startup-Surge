@@ -1,342 +1,318 @@
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using static UnityEditor.PlayerSettings;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // UI Elements
-    public TextMeshProUGUI cashText;
-    public TextMeshProUGUI passiveIncomeText;
-    public TextMeshProUGUI employeeCountText;
-    public Text earnButtonText;
-    public Text upgradeButtonText;
-    public Text hireButtonText;
-    public TextMeshProUGUI popupText;
+    // ========================= UI Elements =========================
+    public TextMeshProUGUI cashText;              // Text showing player's current cash
+    public TextMeshProUGUI passiveIncomeText;     // Text showing passive income rate
+    public TextMeshProUGUI employeeCountText;     // Text showing number of employees hired
 
-    // Buttons
-    public Button earnButton;
-    public Button upgradeButton;
-    public Button hireButton;
+    public Text earnButtonText;                   // Text on the "Earn" button
+    public Text upgradeButtonText;                // Text on the "Upgrade" button
+    public Text hireButtonText;                   // Text on the "Hire" button
 
-    // Game Logic
-    private float currentCash = 9999999f;
-    private int incomePerClick = 1;
-    private int upgradeLevel = 1;
-    private int upgradeCost = 10;
+    public TextMeshProUGUI popupText;             // Floating popup text for feedback
 
-    private int employeeCount = 0;
-    private int employeeCost = 50;
-    private float passiveIncomePerSec = 0f;
+    // ========================= Buttons =========================
+    public Button earnButton;                     // Earn money on click
+    public Button upgradeButton;                  // Upgrade income per click
+    public Button hireButton;                     // Hire new employees
 
-    // Employee Prefabs
-    public GameObject[] employeePrefabs;
-    public Transform employeeParent;
+    // ========================= Game Values =========================
+    public float currentCash = 999999f;           // Starting money
+    public int incomePerClick = 1;                // How much money you earn per click
+    public int upgradeLevel = 1;                  // Level of income upgrade
+    public int upgradeCost = 10;                  // Cost of upgrading
 
-    // Camera
-    public Camera mainCamera;
-    private Vector3 cameraMinPos = new Vector3(-6f, 0f, -10f);
-    private Vector3 cameraMaxPos = new Vector3(6f, 0f, -10f);
+    public int employeeCount = 0;                 // Number of employees hired
+    public int employeeCost = 50;                 // Cost of hiring new employee
+    public float passiveIncome = 0f;              // Total passive income from employees
 
-    // Audio
-    public AudioSource audioSource;
-    public AudioClip earnSound;
-    public AudioClip upgradeSound;
-    public AudioClip hireSound;
-    public AudioClip errorSound;
+    // ========================= Employees =========================
+    public GameObject[] employeePrefabs;          // Different employee types/prefabs
+    public Transform employeeParent;              // Parent object for spawned employees
 
-    private List<Vector3> occupiedPositions = new List<Vector3>();
+    // ========================= Camera =========================
+    public Camera mainCamera;                     // Main camera for movement
+    public Vector3 cameraLeftLimit = new Vector3(-6f, 0f, -10f);  // Camera minimum X
+    public Vector3 cameraRightLimit = new Vector3(6f, 0f, -10f);  // Camera maximum X
 
-    public GameEnd gameEndManager;
+    // ========================= Audio =========================
+    public AudioSource audioSource;               // Main audio source
+    public AudioClip earnClip, upgradeClip, hireClip, errorClip;  // Sounds for actions
 
-    // Function to generate Zone A positions dynamically
-    List<Vector3> GenerateZoneAPositions()
-    {
-        List<Vector3> zoneAPositions = new List<Vector3>();
-        float[] xValues = new float[] { -7.5f, -5f, -2.5f, 7.5f, 5f, 2.5f };
-        float y = -0.9f;
-        float z = 0f;
+    // ========================= Helpers =========================
+    public List<Vector3> filledPositions = new List<Vector3>();   // Already used positions
 
-        foreach (float x in xValues)
-        {
-            zoneAPositions.Add(new Vector3(x, y, z));
-        }
+    public GameEnd gameEndManager;                // Reference to GameEnd class to end game
 
-        return zoneAPositions;
-    }
-
-    // Function to generate Zone B positions dynamically
-    List<Vector3> GenerateZoneBPositions()
-    {
-        List<Vector3> zoneBPositions = new List<Vector3>();
-        float[] xValues = new float[] { 0f, -2f, -4f, -6f, -8f, 2f, 4f, 6f, 8f };
-        float y = -2f;
-        float z = -0.1f;
-
-        foreach (float x in xValues)
-        {
-            zoneBPositions.Add(new Vector3(x, y, z));
-        }
-
-        return zoneBPositions;
-    }
-
+    // ========================= Start Function =========================
     void Start()
     {
-        earnButton.onClick.AddListener(OnEarnClicked);
-        upgradeButton.onClick.AddListener(OnUpgradeClicked);
-        hireButton.onClick.AddListener(OnHireClicked);
+        // Attach functions to button clicks
+        earnButton.onClick.AddListener(EarnMoney);
+        upgradeButton.onClick.AddListener(UpgradeClick);
+        hireButton.onClick.AddListener(HireEmployee);
 
-        InvokeRepeating("AddPassiveIncome", 1f, 1f);
-        popupText.gameObject.SetActive(false);
-        UpdateUI();
+        // Start passive income loop every second
+        InvokeRepeating("GivePassiveIncome", 1f, 1f);
+
+        popupText.gameObject.SetActive(false); // Hide popup by default
+
+        RefreshUI(); // Initialize UI values
     }
 
-    void OnEarnClicked()
+    // ========================= Money Earning =========================
+    void EarnMoney()
     {
-        currentCash += incomePerClick;
-        PlaySound(earnSound);
-        UpdateUI();
-
+        currentCash += incomePerClick; // Add click income
+        PlaySound(earnClip); // Play sound
+        RefreshUI(); // Update UI
     }
 
-    void OnUpgradeClicked()
+    // ========================= Upgrading =========================
+    void UpgradeClick()
     {
         if (currentCash >= upgradeCost)
         {
+            // Upgrade if enough money
             currentCash -= upgradeCost;
             incomePerClick++;
             upgradeLevel++;
-            upgradeCost = Mathf.RoundToInt(upgradeCost * 1.7f);
+            upgradeCost = Mathf.RoundToInt(upgradeCost * 1.7f); // Increase cost
+
             ShowPopup("Upgrade successful!");
-            PlaySound(upgradeSound);
-            UpdateUI();
+            PlaySound(upgradeClip);
+            RefreshUI();
         }
         else
         {
-            ShowPopup($"Low Money! Need ${upgradeCost}");
-            PlaySound(errorSound);
+            // Show error if not enough money
+            ShowPopup("Low Money! Need $" + upgradeCost);
+            PlaySound(errorClip);
         }
     }
 
-    void OnHireClicked()
+    // ========================= Hiring Employees =========================
+    void HireEmployee()
     {
         if (currentCash >= employeeCost)
         {
-            Vector3 spawnPos;
-            if (FindSpawnPosition(out spawnPos))
+            Vector3 position;
+            if (FindFreePosition(out position))
             {
                 currentCash -= employeeCost;
                 employeeCount++;
-                passiveIncomePerSec += 1f;
-                employeeCost = Mathf.RoundToInt(employeeCost * 1.5f);
+                passiveIncome += 1f;
+                employeeCost = Mathf.RoundToInt(employeeCost * 1.5f); // Cost increases
 
-                GameObject prefab = null; // Ensure prefab is initialized
+                GameObject employeeToSpawn = null;
 
-                // Determine which prefab to use based on position
-                if (spawnPos.z == 0f) // Zone A
+                // Choose which employee prefab to use based on position
+                if (position.z == 0f)
                 {
-                    if (spawnPos.x == -7.5f || spawnPos.x == -5f || spawnPos.x == -2.5f)
-                    {
-                        prefab = employeePrefabs[2]; // char3
-                    }
+                    if (position.x == -7.5f || position.x == -5f || position.x == -2.5f)
+                        employeeToSpawn = employeePrefabs[2]; // left-most gets a special prefab
                     else
-                    {
-                        prefab = employeePrefabs[4]; // char5
-                    }
-                }
-                else if (spawnPos.z == -0.1f) // Zone B
-                {
-                    // In Zone B, ensure only Char1 (0), Char2 (1), or Char4 (3) spawn
-                    int randIndex = Random.Range(0, 3); // Randomly choose between 0, 1, or 3 (Char1, Char2, Char4)
-
-                    // Map the random index to the correct character prefab
-                    switch (randIndex)
-                    {
-                        case 0:
-                            prefab = employeePrefabs[0]; // Char1
-                            break;
-                        case 1:
-                            prefab = employeePrefabs[1]; // Char2
-                            break;
-                        case 2:
-                            prefab = employeePrefabs[3]; // Char4
-                            break;
-                    }
-                }
-
-                // Ensure prefab has been assigned before instantiation
-                if (prefab != null)
-                {
-                    // Instantiate the employee at the found position
-                    Instantiate(prefab, spawnPos, Quaternion.identity, employeeParent);
-                    occupiedPositions.Add(spawnPos);
-
-                    ShowPopup($"Employee Hired! Total: {employeeCount}");
-                    MoveCameraTo(spawnPos.x);
-                    PlaySound(hireSound);
-                    UpdateUI();
+                        employeeToSpawn = employeePrefabs[4]; // right side
                 }
                 else
                 {
-                    ShowPopup("Error: Invalid employee prefab.");
-                    PlaySound(errorSound);
+                    // Random prefab for zone B
+                    int r = Random.Range(0, 3);
+                    if (r == 0)
+                        employeeToSpawn = employeePrefabs[0];
+                    else if (r == 1)
+                        employeeToSpawn = employeePrefabs[1];
+                    else
+                        employeeToSpawn = employeePrefabs[3];
+                }
+
+                // Spawn employee if prefab is valid
+                if (employeeToSpawn != null)
+                {
+                    Instantiate(employeeToSpawn, position, Quaternion.identity, employeeParent);
+                    filledPositions.Add(position);
+
+                    ShowPopup("Employee Hired! Total: " + employeeCount);
+                    PlaySound(hireClip);
+                    MoveCamera(position.x);
+                    RefreshUI();
+                }
+                else
+                {
+                    ShowPopup("Invalid employee prefab.");
+                    PlaySound(errorClip);
                 }
             }
             else
             {
                 ShowPopup("No space left to hire!");
-                PlaySound(errorSound);
+                PlaySound(errorClip);
             }
         }
         else
         {
-            PlaySound(errorSound);
-            ShowPopup($"Low Money! Need ${employeeCost}");
+            ShowPopup("Low Money! Need $" + employeeCost);
+            PlaySound(errorClip);
         }
-        if (employeeCount >= 15)  // Replace with your condition
+
+        // Trigger game end if 15 employees are hired
+        if (employeeCount >= 15)
         {
-            gameEndManager.EndGame();  // Call the EndGame function in the new script
+            gameEndManager.EndGame();
         }
-
     }
 
-    void AddPassiveIncome()
+    // ========================= Passive Income =========================
+    void GivePassiveIncome()
     {
-        currentCash += passiveIncomePerSec;
-        UpdateUI();
+        currentCash += passiveIncome; // Add passive income per second
+        RefreshUI(); // Update UI
     }
 
-    void UpdateUI()
+    // ========================= UI Update =========================
+    void RefreshUI()
     {
+        // Update all UI texts
         cashText.text = "$" + currentCash.ToString("F0");
         earnButtonText.text = "EARN +$" + incomePerClick;
         upgradeButtonText.text = "UPGRADE ($" + upgradeCost + ")";
         hireButtonText.text = "HIRE ($" + employeeCost + ")";
-        passiveIncomeText.text = "Passive: $" + passiveIncomePerSec + "/sec";
+        passiveIncomeText.text = "Passive: $" + passiveIncome + "/sec";
         employeeCountText.text = "Emp.: " + employeeCount;
     }
 
-    void ShowPopup(string message)
+    // ========================= Popup Animation =========================
+    void ShowPopup(string msg)
     {
-        popupText.text = message;
+        popupText.text = msg;
         popupText.gameObject.SetActive(true);
         popupText.transform.localScale = Vector3.one * 0.8f;
         popupText.alpha = 1f;
 
-        StopCoroutine("AnimatePopup"); // Stop previous one if running
-        StartCoroutine(AnimatePopup());
-    }
-
-    void HidePopup()
-    {
-        popupText.gameObject.SetActive(false);
+        StopCoroutine("AnimatePopup"); // Stop any current animation
+        StartCoroutine(AnimatePopup()); // Start new animation
     }
 
     IEnumerator AnimatePopup()
     {
+        float t = 0f;
         float duration = 2f;
-        float elapsed = 0f;
 
-        Vector3 startScale = Vector3.one * 0.8f;
-        Vector3 endScale = Vector3.one;
+        Vector3 start = Vector3.one * 0.8f;
+        Vector3 end = Vector3.one;
 
-        while (elapsed < duration)
+        while (t < duration)
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+            t += Time.deltaTime;
+            float percent = t / duration;
 
-            popupText.transform.localScale = Vector3.Lerp(startScale, endScale, t);
-            popupText.alpha = Mathf.Lerp(1f, 0f, t); // Fade out
+            popupText.transform.localScale = Vector3.Lerp(start, end, percent);
+            popupText.alpha = Mathf.Lerp(1f, 0f, percent);
 
             yield return null;
         }
 
-        popupText.gameObject.SetActive(false);
+        popupText.gameObject.SetActive(false); // Hide after fade
     }
 
-    void MoveCameraTo(float targetX)
+    // ========================= Camera Control =========================
+    void MoveCamera(float x)
     {
-        Vector3 target = new Vector3(Mathf.Clamp(targetX, cameraMinPos.x, cameraMaxPos.x), 0f, -10f);
-        StopAllCoroutines(); // Stop if a camera move is already happening
+        // Clamp target X to limits
+        Vector3 target = new Vector3(Mathf.Clamp(x, cameraLeftLimit.x, cameraRightLimit.x), 0f, -10f);
+        StopAllCoroutines();
         StartCoroutine(MoveCameraRoutine(target));
     }
 
-    bool FindSpawnPosition(out Vector3 pos)
+    IEnumerator MoveCameraRoutine(Vector3 target)
     {
-        List<Vector3> zoneAPositions = GenerateZoneAPositions(); // Generate Zone A positions
-        List<Vector3> zoneBPositions = GenerateZoneBPositions(); // Generate Zone B positions
+        // Smoothly move to target
+        Vector3 start = mainCamera.transform.position;
+        float t = 0f;
 
-        // Try Zone A first
-        foreach (Vector3 p in zoneAPositions)
+        while (t < 1f)
         {
-            if (!occupiedPositions.Contains(p))
+            t += Time.deltaTime * 2f;
+            mainCamera.transform.position = Vector3.Lerp(start, target, t);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(2f); // Stay for 2 seconds
+
+        // Move back to original position
+        t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 2f;
+            mainCamera.transform.position = Vector3.Lerp(target, start, t);
+            yield return null;
+        }
+    }
+
+    // ========================= Position Logic =========================
+    bool FindFreePosition(out Vector3 pos)
+    {
+        // First try zone A positions
+        foreach (Vector3 p in GetZoneAPositions())
+        {
+            if (!filledPositions.Contains(p))
             {
                 pos = p;
                 return true;
             }
         }
 
-        // If Zone A is filled, check Zone B
-        foreach (Vector3 p in zoneBPositions)
+        // Then try zone B
+        foreach (Vector3 p in GetZoneBPositions())
         {
-            if (!occupiedPositions.Contains(p))
+            if (!filledPositions.Contains(p))
             {
                 pos = p;
                 return true;
             }
         }
 
-        // If no space found
+        // No position found
         pos = Vector3.zero;
         return false;
     }
 
-
-
-    /*bool IsOccupied(Vector3 position)
-        {
-            float minSpacing = 1.5f;
-            Collider[] colliders = Physics.OverlapSphere(position, minSpacing);
-            foreach (Collider c in colliders)
-            {
-                if (c.CompareTag("Employee")) return true;
-            }
-            return false;
-        }*/
-
-    IEnumerator MoveCameraRoutine(Vector3 targetPos)
+    // Zone A = top row
+    List<Vector3> GetZoneAPositions()
     {
-        Vector3 originalPos = mainCamera.transform.position;
-        float t = 0f;
-
-        // Move to target
-        while (t < 1f)
+        List<Vector3> positions = new List<Vector3>();
+        float[] xs = new float[] { -7.5f, -5f, -2.5f, 7.5f, 5f, 2.5f };
+        foreach (float x in xs)
         {
-            t += Time.deltaTime * 2f; // Speed of camera move
-            mainCamera.transform.position = Vector3.Lerp(originalPos, targetPos, t);
-            yield return null;
+            positions.Add(new Vector3(x, -0.9f, 0f));
         }
-
-        // Wait for 2 seconds
-        yield return new WaitForSeconds(2f);
-
-        t = 0f;
-        // Move back to original
-        while (t < 1f)
-        {
-            t += Time.deltaTime * 2f;
-            mainCamera.transform.position = Vector3.Lerp(targetPos, originalPos, t);
-            yield return null;
-        }
+        return positions;
     }
 
+    // Zone B = bottom row (fallback)
+    List<Vector3> GetZoneBPositions()
+    {
+        List<Vector3> positions = new List<Vector3>();
+        float[] xs = new float[] { 0f, -2f, -4f, -6f, -8f, 2f, 4f, 6f, 8f };
+        foreach (float x in xs)
+        {
+            positions.Add(new Vector3(x, -2f, -0.1f));
+        }
+        return positions;
+    }
+
+    // ========================= Audio =========================
     void PlaySound(AudioClip clip)
     {
         if (audioSource != null && clip != null)
+        {
             audioSource.PlayOneShot(clip);
+        }
     }
-
 }
